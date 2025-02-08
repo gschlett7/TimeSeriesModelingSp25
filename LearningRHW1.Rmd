@@ -1,0 +1,91 @@
+---
+title: 'Learning R HW 1'
+author: 'Gregory Schlett'
+date: '02-07-2025'
+output: html_document
+---
+
+```{r}
+plot(typ, main = "Employee Response")
+```
+
+
+```{r}
+install.packages(fpp)
+library(fpp)
+typ <- Typical_Employee_Survey_Data
+typ
+```
+
+library(readxl)
+Typical_Employee_Survey_Data <- read_excel("Downloads/Typical_Employee_Survey_Data.xlsx")
+
+names(Typical_Employee_Survey_Data) = c('Age','Gender','Satisfaction','Characteristic','YearsWithComp','PromotionLikelihood','DecisionMaking','BudgetDecisions','CompanyPride','JobOfferScenario','Relationships')
+Typical_Employee_Survey_Data
+
+boxplot(Typical_Employee_Survey_Data$Satisfaction, Typical_Employee_Survey_Data$Characteristic, Typical_Employee_Survey_Data$YearsWithComp, Typical_Employee_Survey_Data$CompanyPride, Typical_Employee_Survey_Data$JobOfferScenario)
+
+Typical_Employee_Survey_Data$Gender <- as.factor(Typical_Employee_Survey_Data$Gender)
+class(Typical_Employee_Survey_Data$Gender)
+
+print(is.factor(Typical_Employee_Survey_Data$Gender))
+
+Typical_Employee_Survey_Data$PromotionLikelihood <- as.factor(Typical_Employee_Survey_Data$PromotionLikelihood)
+class(Typical_Employee_Survey_Data$PromotionLikelihood)
+
+# Quicker way to transform columns into factors
+factor_cols <- c("Gender", "Satisfaction", "Characteristic", "PromotionLikelihood", "DecisionMaking", "BudgetDecisions", "CompanyPride", "JobOfferScenario", "Relationships")
+data[factor_cols] <- lapply(data[factor_cols], as.factor)
+
+class(Typical_Employee_Survey_Data)
+
+stem(Typical_Employee_Survey_Data$Age)
+stem(Typical_Employee_Survey_Data$Satisfaction)
+stem(Typical_Employee_Survey_Data$Characteristic)
+stem(Typical_Employee_Survey_Data$YearsWithComp)
+stem(Typical_Employee_Survey_Data$CompanyPride)
+stem(Typical_Employee_Survey_Data$JobOfferScenario)
+stem(Typical_Employee_Survey_Data$Relationships)
+
+#Age Plot
+barplot(Typical_Employee_Survey_Data$Age, main = "Age", xlab = "Employee", ylab = "Age (in years)", col = "Green", names.arg = Typical_Employee_Survey_Data$Number)
+Typical_Employee_Survey_Data$Age <- as.numeric(Typical_Employee_Survey_Data$Age)
+barplot(Typical_Employee_Survey_Data$Age, main = "Age Distribution", xlab = "Employee", ylab = "Age (in years)", col = "green", names.arg = Typical_Employee_Survey_Data$Age, las = 2)
+
+#Gender Chart
+Typical_Employee_Survey_Data$Gender <- as.factor(Typical_Employee_Survey_Data$Gender)
+gender_count <- table(Typical_Employee_Survey_Data$Gender)
+
+pie(gender_count, labels = names(gender_count), main = "Gender", col = rainbow(length(gender_count)))
+
+print(gender_count)
+names(gender_count) <- c('Male', 'Female')
+print(gender_count)
+
+pie(gender_count, labels = names(gender_count), main = "Gender", col = rainbow(length(gender_count)))
+
+#Satisfaction 
+barplot(Typical_Employee_Survey_Data$Satisfaction, main = "Employee Satisfaction", xlab = "Employee", ylab = "Satisfaction Response", col = "Green", names.arg = Typical_Employee_Survey_Data$Number)
+
+str(Typical_Employee_Survey_Data)
+
+names(Typical_Employee_Survey_Data)
+
+summary(Typical_Employee_Survey_Data)
+boxplot.stats(Typical_Employee_Survey_Data$Age)
+
+x1 = Typical_Employee_Survey_Data$Age
+y1 = Typical_Employee_Survey_Data$Gender
+
+plot(Typical_Employee_Survey_Data$Age)
+plot(x1, main="Age and Gender", xlab="Age", ylab="Gender", col="red", cex=2)
+points(y1, col="blue", cex=2)
+
+plot(Typical_Employee_Survey_Data$CompanyPride)
+plot(Typical_Employee_Survey_Data$Satisfaction)
+plot(Typical_Employee_Survey_Data$JobOfferScenario)
+
+
+
+
+

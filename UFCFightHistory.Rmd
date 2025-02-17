@@ -1,0 +1,78 @@
+---
+title: "UFC Fight History"
+author: "Gregory Schlett"
+date: "2025-02-16"
+output: html_document
+--- 
+
+# UFC Fight History
+## Data from: Kaggle
+### Updated by: Alex Magnus
+####### End
+
+```{r}
+getwd()
+```
+
+```{r}
+# Uploading CSV file from working directory
+ufc_data <- read.csv("UFC Fight Statistics (July 2016 - Nov 2024).csv")
+# ufc_data <- read.csv("/Users/gschlett/Desktop/Time Series - Spring '25/UFC Fight Statistics (July 2016 - Nov 2024).csv")
+
+# View of the first few rows of Fight Statistics
+head(ufc_data)
+```
+
+```{r}
+str(ufc_data)
+```
+```{r}
+ufc_data$TotalStrikes.F1 <- ufc_data$Total.Strike.Landed.F1R1 + ufc_data$Total.Strike.Landed.F1R2 + ufc_data$Total.Strike.Landed.F1R3 + ufc_data$Total.Strike.Landed.F1R4 + ufc_data$Total.Strike.Landed.F1R5
+
+ufc_data$TotalStrikes.F2 <- ufc_data$Total.Strike.Landed.F2R1 + ufc_data$Total.Strike.Landed.F2R2 + ufc_data$Total.Strike.Landed.F2R3 + ufc_data$Total.Strike.Landed.F2R4 + ufc_data$Total.Strike.Landed.F2R5
+
+ufc_data$TotalSigStrikes.F1 <- ufc_data$Sig..Strike.Landed.F1R1 + ufc_data$Sig..Strike.Landed.F1R2 + ufc_data$Sig..Strike.Landed.F1R3 + ufc_data$Sig..Strike.Landed.F1R4 + ufc_data$Sig..Strike.Landed.F1R5
+
+ufc_data$TotalSigStrikes.F2 <- ufc_data$Sig..Strike.Landed.F2R1 + ufc_data$Sig..Strike.Landed.F2R2 + ufc_data$Sig..Strike.Landed.F2R3 + ufc_data$Sig..Strike.Landed.F2R4 + ufc_data$Sig..Strike.Landed.F2R5
+
+ufc_data$TotalKnockdowns.F1 <- ufc_data$Knockdowns.F1R1 + ufc_data$Knockdowns.F1R2 + ufc_data$Knockdowns.F1R3 + ufc_data$Knockdowns.F1R4 + ufc_data$Knockdowns.F1R5
+
+ufc_data$TotalKnockdowns.F2 <- ufc_data$Knockdowns.F2R1 + ufc_data$Knockdowns.F2R2 + ufc_data$Knockdowns.F2R3 + ufc_data$Knockdowns.F2R4 + ufc_data$Knockdowns.F2R5
+
+ufc_data$TotalTakedowns.F1 <- ufc_data$TD.Completed.F1R1 + ufc_data$TD.Completed.F1R2 + ufc_data$TD.Completed.F1R3 + ufc_data$TD.Completed.F1R4 + ufc_data$TD.Completed.F1R5
+
+ufc_data$TotalTakedowns.F2 <- ufc_data$TD.Completed.F2R1 + ufc_data$TD.Completed.F2R2 + ufc_data$TD.Completed.F2R3 + ufc_data$TD.Completed.F2R4 + ufc_data$TD.Completed.F2R5
+
+ufc_data$TotalControlTime.F1 <- ufc_data$Ctrl.Time..Minutes..F1R1 + ufc_data$Ctrl.Time..Minutes..F1R2 + ufc_data$Ctrl.Time..Minutes..F1R3 + ufc_data$Ctrl.Time..Minutes..F1R4 + ufc_data$Ctrl.Time..Minutes..F1R5
+
+ufc_data$TotalControlTime.F2 <- ufc_data$Ctrl.Time..Minutes..F2R1 + ufc_data$Ctrl.Time..Minutes..F2R2 + ufc_data$Ctrl.Time..Minutes..F2R3 + ufc_data$Ctrl.Time..Minutes..F2R4 + ufc_data$Ctrl.Time..Minutes..F2R5
+```
+
+
+```{r}
+# This Creates the Data Dictionary
+data_dictionary <- data.frame(
+  Variable = c("Fighter1", "Fighter2", "Winner", "Fight Method", "Time", "Time.Format", "Referee", "Finish.Details.or.Judges.Scorecard", "Bout", "Date", "TotalStrikes.F1", "TotalStrikes.F2", "TotalSigStrikes.F1", "TotalSigStrikes.F2", "TotalKnockdowns.F1", "TotalKnockdowns.F2", "TotalTakedowns.F1", "TotalTakedowns.F2", "TotalControlTime.F1", "TotalControlTime.F2"),
+  Description = c(
+    "The name of the first fighter involved in the fight.",
+    "The name of the second fighter involved in the fight.",
+    "Indicates the winner of the fight: 1 = Fighter1 wins, 0 = Fighter2 wins.","How the decided winner won the fight.", "The time it took for the fight to finish", "The number of rounds and minutes per round", "The name of the referee in the cage at the time of the fight", "The names of the judges and the points awarded to the fighters", "The weightclass the fight takes place in", "When the fight took place", "The total number of strikes landed by Fighter 1", "The total number of strikes landed by Fighter 2", "The total number of significant strikes (strikes with damaging impact) landed by Fighter 1", "The total number of significant strikes (strikes with damaging impact) landed by Fighter 2", "The total number of times fighter 1 knocked fighter 2 to the ground with a strike", "The total number of times fighter 2 knocked fighter 1 to the ground with a strike", "The total number of times fighter 1 took fighter 2 to the ground with a grappling exchange", "The total number of times fighter 2 took fighter 1 to the ground with a grappling exchange", "The amount of time fighter 1 controlled fighter 2 on the ground or in a clinch", "The amount of time fighter 2 controlled fighter 1 on the ground or in a clinch"
+  ),
+  Data_Type = c("Character", "Character", "Integer", "Character", "Character", "Character", "Character", "Character", "Character", "Character", "Character", "Integer", "Integer", "Integer", "Integer", "Integer", "Integer", "Integer", "Integer", "Integer")
+)
+
+# Print the data dictionary
+print(data_dictionary)
+
+```
+
+##### Data Collection Methodology
+* This Data Set was downloaded on Kaggle
+* The author, Alex Magnus, collected the data from the UFC
+* The UFC tracks the data, through the help of their Judges and statistics analyst, through the official UFC website and sports platforms like ESPN, Sherdog, and Digital Scales
+* These statistics are calculated every Saturday and refreshed every Sunday
+
+##### Interest of the Data
+* As an amateur fighter this data interests me as it shows trends in fighters, their methods of victory, and most importantly what statistics and data points matter that can help predict a win
+* For example, how many total strikes would you predict a fighter might need to collect in order to win a fight? How much control? and many other variables that could predict the fight outcome. 
+
